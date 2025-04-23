@@ -1,6 +1,6 @@
 import React, {useEffect, useLayoutEffect} from 'react';
 import {View, StyleSheet, StatusBar} from 'react-native';
-import SplashScreenAnimation from '../../components/SplashScreenAnimation';
+import SplashScreenAnimation from '../../components/animationsLottie/SplashScreenAnimation';
 import {SCREEN_NAME} from '../../constant/ScreenName';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
@@ -16,7 +16,7 @@ interface SplashScreenProps {
 const SplashScreen = ({navigation}: SplashScreenProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace(SCREEN_NAME.HOME_SCREEN);
+      navigation.replace(SCREEN_NAME.OTP_SCREEN);
     }, 3000);
     return () => clearTimeout(timer);
   }, [navigation]);
