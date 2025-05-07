@@ -8,4 +8,14 @@ type ResponsiveTextTypes = {
     fontStyle?:ViewStyle
 }
 
-export type {ResponsiveTextTypes}
+type CustomButtonProps ={
+    onPress?:() =>void;
+    title?:string;
+    titleStyle?:TextStyle;
+    buttonStyle?:ViewStyle;
+    disabled?:boolean;
+    type?:'solid' | 'clear' | 'outline';
+    loading?: boolean;
+}
+
+export type {ResponsiveTextTypes,CustomButtonProps}

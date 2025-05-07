@@ -22,17 +22,19 @@ const ImageScroll = ({
   return (
     <AutoScroll duration={20000}>
       <View style={[styles.rowBase, {marginTop, marginLeft, marginRight}]}>
-        {images.map((item, index) => (
-          <View
-            key={index}
-            style={{
-              marginLeft: index === 0 ? -scale(110) : gap,
-            }}>
-            <View style={styles.imageBox}>
-              <Image source={item} style={styles.imageStyle} />
+        {images.map((item, index) => {
+          return (
+            <View
+              key={index}
+              style={{
+                marginLeft: index === 0 ? -scale(110) : scale(18),
+              }}>
+              <View style={styles.imageBox}>
+                <Image source={item} style={styles.imageStyle} />
+              </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
     </AutoScroll>
   );

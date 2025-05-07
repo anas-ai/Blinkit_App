@@ -43,6 +43,7 @@ export const colors = {
     DarkerTone:'#1E1E1E',
     Neon_Pink:'#FF00FF',
     light_green:'#00B932',
-    Button_gray:'#EEEEEE'
+    Button_gray:'#EEEEEE',
+    Olive_Green:'#318516'
   };
   
