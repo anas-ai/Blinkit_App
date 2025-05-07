@@ -3,7 +3,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {Stack_Screens} from '../routes/Routes';
-import { SCREEN_NAME } from '../constant/ScreenName';
+import {SCREEN_NAME} from '../constant/ScreenName';
 
 const Stack = createNativeStackNavigator();
 const AppNavigatoin = () => {
