@@ -17,24 +17,53 @@ import {
   imageset4,
   IMG_PNG,
 } from '../../constant/ImagesName';
-import {colors} from '../../styles/Colors';
-import PhoneInput, {ICountry} from 'react-native-international-phone-number'; // ✅ import ICountry
+import {colors, lightColors} from '../../styles/Colors';
+import PhoneInput, {ICountry} from 'react-native-international-phone-number';
 import CustomButton from '../../components/ButtonComponent/ButtonCustom';
+import LinearGradient from 'react-native-linear-gradient';
+import StatusBarComponent from '../../components/StatusBarComponent/StatusBarComponent';
+import {useForm, Controller} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {phoneSchema} from '../../schema/zodSchema';
+import { SCREEN_NAME } from '../../constant/ScreenName';
+import { ApiConfig } from '../../config/ApiConfig';
+import axios from 'axios'
+const AutoScrollExample = (props: any) => {
+  const [selectedCountry, setSelectedCountry] = useState<ICountry | null>(null);
 
-const AutoScrollExample = () => {
-  const [selectedCountry, setSelectedCountry] = useState<ICountry | null>(null); // ✅ correct typing
-  const [inputValue, setInputValue] = useState<string>(''); // ✅ strong typing
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: zodResolver(phoneSchema),
+    mode: 'onSubmit', // ← only validate after clicking "Continue"
+    defaultValues: {
+      phone: '',
+    },
+  });
 
-  function handleInputValue(phoneNumber: string) {
-    setInputValue(phoneNumber);
+  const onSubmit = async (data: any) => {
+  try {
+    const number = data.phone 
+    const phone = `+91${number}`
+    console.log('Sending OTP to:', phone);
+   
+    const response = await axios.post(ApiConfig.SEND_OTP,phone );
+    
+    console.log('OTP sent successfully:', response.data);
+    // Navigate to OTP screen or show success message here
+  } catch (error: any) {
+    console.error('Failed to send OTP:', error.response?.data || error.message);
+    // Show error message to the user (optional Toast/snackbar)
   }
+};
 
-  function handleSelectedCountry(country: ICountry) {
-    setSelectedCountry(country);
-  }
+  const bottomColors = [...lightColors].reverse();
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.white}}>
+      <StatusBarComponent hidden={true} />
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -69,13 +98,16 @@ const AutoScrollExample = () => {
             gap={scale(20)}
           />
 
+          <LinearGradient
+            colors={bottomColors}
+            style={{paddingTop: 10, width: '100%'}}
+          />
+
           <View
             style={{
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: colors.white,
-              paddingTop: scale(12),
-              flex:1,
             }}>
             <View>
               <Image
@@ -100,41 +132,60 @@ const AutoScrollExample = () => {
               fontSize={16}
               fontWeight="bold"
               fontColor={colors.bgBlack}
-
             />
 
-            <PhoneInput
-              value={inputValue}
-              onChangePhoneNumber={handleInputValue}
-              selectedCountry={selectedCountry}
-              onChangeSelectedCountry={handleSelectedCountry}
-              phoneInputStyles={{
-                container: {
-                  width: '85%',
-                  marginTop: scale(18),
-                },
-                input: {
-                  color: colors.black,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flex: 1,
-                  fontSize: scale(12),
-                  right: scale(22),
-                },
-                flagContainer: {
-                  backgroundColor: colors.white,
-                },
-              }}
-              modalStyles={{
-                modal: {
-                  padding: scale(18),
-                  paddingHorizontal: scale(10),
-                },
-              }}
+            {/* Phone Input with Controller */}
+            <Controller
+              name="phone"
+              control={control}
+              render={({field: {onChange, onBlur, value}}) => (
+                <PhoneInput
+                  onBlur={onBlur}
+                  value={value}
+                  onChangePhoneNumber={phone => {
+                    const cleaned = phone.trimStart().replace(/[^\d]/g, '');
+                    onChange(cleaned); // Send only clean digits to form state
+                  }}
+                  selectedCountry={selectedCountry}
+                  onChangeSelectedCountry={setSelectedCountry}
+                  phoneInputStyles={{
+                    container: {
+                      width: '85%',
+                      marginTop: scale(18),
+                    },
+                    input: {
+                      color: colors.black,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flex: 1,
+                      fontSize: scale(12),
+                      right: scale(22),
+                    },
+                    flagContainer: {
+                      backgroundColor: colors.white,
+                    },
+                  }}
+                  modalStyles={{
+                    modal: {
+                      padding: scale(18),
+                      paddingHorizontal: scale(10),
+                    },
+                  }}
+                />
+              )}
             />
+            {errors?.phone && (
+              <ResponsiveText
+                title={errors.phone.message}
+                fontColor={colors.red}
+                fontSize={10}
+                fontStyle={{marginLeft: 10}}
+              />
+            )}
 
             <CustomButton
-              title="Countinue"
+              onPress={handleSubmit(onSubmit)}
+              title="Continue"
               buttonStyle={{
                 width: scale(300),
                 backgroundColor: colors.Olive_Green,
