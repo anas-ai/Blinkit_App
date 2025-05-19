@@ -1,38 +1,101 @@
 import React from 'react';
-import {SafeAreaView, View} from 'react-native';
-import {OtpInput} from 'react-native-otp-entry';
-import {scale} from 'react-native-size-matters';
+import { Alert, SafeAreaView, View, StyleSheet } from 'react-native';
+import { OtpInput } from 'react-native-otp-entry';
+import { scale } from 'react-native-size-matters';
 import HeaderComponent from '../../components/BackButtonCompoent/BackWithTitile';
 import ResponsiveText from '../../components/ResponsiveText';
-import {colors} from '../../styles/Colors';
+import { colors } from '../../styles/Colors';
+import axios from 'axios';
+import { ApiConfig } from '../../config/ApiConfig';
+import { useForm } from 'react-hook-form';
+import { SCREEN_NAME } from '../../constant/ScreenName';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { styles } from './style';
 
-const OtpVerifyScreen = ({navigation}: any) => {
+type RootStackParamList = {
+  [SCREEN_NAME.HOME_SCREEN]: undefined;
+  OtpVerifyScreen: { PhoneNumber: string; id: string };
+};
+
+type OtpVerifyScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'OtpVerifyScreen'
+>;
+
+interface RouteParams {
+  PhoneNumber: string;
+  id: string;
+}
+
+interface OtpVerifyScreenProps {
+  navigation: OtpVerifyScreenNavigationProp;
+  route: { params: RouteParams };
+}
+
+interface OtpFormData {
+  otp: string;
+}
+
+const OtpVerifyScreen = ({ navigation, route }: OtpVerifyScreenProps) => {
+  const { setValue, handleSubmit } = useForm<OtpFormData>();
+  const { PhoneNumber: userPhone, id: userID } = route.params;
+
+  const verifyOtp = async (data: OtpFormData) => {
+    try {
+      const response = await axios.post<{ status: number; data: { message?: string } }>(
+        ApiConfig.OTP_VERIFY_OTP,
+        {
+          otp: data.otp,
+          user_id: userID,
+        }
+      );
+      if (response.status === 200) {
+        navigation.navigate(SCREEN_NAME.HOME_SCREEN);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const { response } = error;
+        Alert.alert('Error while verifying OTP', response?.data?.message ?? 'An error occurred');
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred');
+      }
+    }
+  };
+
+  const handleChange = (text: string) => {
+    if (text && text.length === 4) {
+      setValue('otp', text);
+      handleSubmit(verifyOtp)();
+    }
+  };
+
   return (
-    <SafeAreaView style={{backgroundColor: colors.white, flex: 1}}>
+    <SafeAreaView style={styles.container}>
       <HeaderComponent
         title="OTP verification"
         IconName="arrow-back"
         IconType="Ionicons"
         navigation={navigation}
       />
-      <View style={{flex: 1, alignItems: 'center', paddingTop: scale(20)}}>
+      <View style={styles.contentContainer}>
         <ResponsiveText
-          title="We've sent a verificaiton code  to "
+          title="We've sent a verification code to "
           fontColor={colors.bgBlack}
           fontSize={16}
           fontWeight="400"
-          fontStyle={{paddingVertical:scale(20)}}
+          fontStyle={styles.verificationText}
         />
 
         <ResponsiveText
-          title={`+91${8888888888}`}
+          title={userPhone}
           fontColor={colors.black}
           fontWeight="500"
-          fontStyle={{marginBottom:scale(20)}}
+          fontStyle={styles.phoneText}
         />
-        <View style={{width: '80%'}}>
+
+        <View style={styles.otpContainer}>
           <OtpInput
-            numberOfDigits={6}
+            numberOfDigits={4}
             focusColor={colors.green}
             autoFocus={true}
             hideStick={true}
@@ -44,8 +107,8 @@ const OtpVerifyScreen = ({navigation}: any) => {
             focusStickBlinkingDuration={500}
             onFocus={() => console.log('Focused')}
             onBlur={() => console.log('Blurred')}
-            onTextChange={text => console.log(text)}
-            onFilled={text => console.log(`OTP is ${text}`)}
+            onTextChange={handleChange}
+            onFilled={(text) => console.log(`OTP is ${text}`)}
             textInputProps={{
               accessibilityLabel: 'One-Time Password',
             }}
@@ -54,15 +117,9 @@ const OtpVerifyScreen = ({navigation}: any) => {
               accessibilityLabel: 'OTP digit',
               allowFontScaling: false,
             }}
-
-             theme={{
-          pinCodeContainerStyle: {
-            borderWidth: 1.5,
-            borderRadius: 10,
-            borderColor:  colors.shadow,
-          },
-        }}
-           
+            theme={{
+              pinCodeContainerStyle: styles.pinCodeContainer,
+            }}
           />
         </View>
       </View>
@@ -71,3 +128,5 @@ const OtpVerifyScreen = ({navigation}: any) => {
 };
 
 export default OtpVerifyScreen;
+
+

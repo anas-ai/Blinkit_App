@@ -25,11 +25,13 @@ import StatusBarComponent from '../../components/StatusBarComponent/StatusBarCom
 import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {phoneSchema} from '../../schema/zodSchema';
-import { SCREEN_NAME } from '../../constant/ScreenName';
-import { ApiConfig } from '../../config/ApiConfig';
-import axios from 'axios'
+import {SCREEN_NAME} from '../../constant/ScreenName';
+import {ApiConfig} from '../../config/ApiConfig';
+import axios from 'axios';
+import {saveToStorage} from '../../utils/MmkvStorageHelper';
 const AutoScrollExample = (props: any) => {
   const [selectedCountry, setSelectedCountry] = useState<ICountry | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const {
     control,
@@ -37,27 +39,39 @@ const AutoScrollExample = (props: any) => {
     formState: {errors},
   } = useForm({
     resolver: zodResolver(phoneSchema),
-    mode: 'onSubmit', // ← only validate after clicking "Continue"
+    mode: 'onSubmit',
     defaultValues: {
       phone: '',
     },
   });
 
   const onSubmit = async (data: any) => {
-  try {
-    const number = data.phone 
-    const phone = `+91${number}`
-    console.log('Sending OTP to:', phone);
-   
-    const response = await axios.post(ApiConfig.SEND_OTP,phone );
-    
-    console.log('OTP sent successfully:', response.data);
-    // Navigate to OTP screen or show success message here
-  } catch (error: any) {
-    console.error('Failed to send OTP:', error.response?.data || error.message);
-    // Show error message to the user (optional Toast/snackbar)
-  }
-};
+    setLoading(true);
+    try {
+      const number = data.phone;
+      const phone = `+91 ${number}`;
+      console.log('Sending OTP to:', phone);
+      const response = await axios.post(ApiConfig.SEND_OTP, {phone});
+      if (response?.status === 201) {
+        const otpCode = response?.data?.data?.otp?.code;
+        const PhoneNumber = response?.data?.data?.phone
+        const userId = response?.data?.data?._id;
+        console.log(userId,'userid')
+        props.navigation.navigate(SCREEN_NAME.OTP_VERIFY_SCREEN, {
+          otpCode:otpCode,
+          id:userId,
+          PhoneNumber:PhoneNumber
+        });
+      }
+    } catch (error: any) {
+      console.error(
+        'Failed to send OTP:',
+        error.response?.data || error.message,
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const bottomColors = [...lightColors].reverse();
 
@@ -184,6 +198,7 @@ const AutoScrollExample = (props: any) => {
             )}
 
             <CustomButton
+              loading={loading}
               onPress={handleSubmit(onSubmit)}
               title="Continue"
               buttonStyle={{
