@@ -3,14 +3,14 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {SCREEN_NAME} from '../constant/ScreenName';
-import { LoginStack } from '../routes/Routes';
+import { AuthStack, LoginStack } from '../routes/Routes';
 
 const Stack = createNativeStackNavigator();
-const AppNavigatoin = () => {
+const AuthNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={SCREEN_NAME.SPLASH_SCREEN}>
-        {LoginStack.map((item, index) => (
+      <Stack.Navigator>
+        {AuthStack.map((item, index) => (
           <Stack.Screen
             key={index}
             name={item?.name}
@@ -28,4 +28,4 @@ const AppNavigatoin = () => {
   );
 };
 
-export default AppNavigatoin;
+export default AuthNavigator;

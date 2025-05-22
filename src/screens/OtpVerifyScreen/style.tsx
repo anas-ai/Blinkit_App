@@ -13,17 +13,16 @@ import { scale } from "react-native-size-matters";
     paddingTop: scale(20),
   },
   verificationText: {
-    paddingVertical: scale(20),
   },
   phoneText: {
-    marginBottom: scale(20),
+    marginBottom: scale(40),
   },
   otpContainer: {
-    width: '80%',
+    width: '60%',
   },
   pinCodeContainer: {
-    borderWidth: 1.5,
     borderRadius: 10,
-    borderColor: colors.shadow,
+    backgroundColor:colors.Button_gray,
+    height:50
   },
 });

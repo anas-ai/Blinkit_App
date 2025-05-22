@@ -4,26 +4,26 @@ LOGO_PNG:require('../assets/Images/logo.png')
 
 
 export const imageset1 = [
-    require('../assets/products/1.png'),
-    require('../assets/products/2.png'),
-    require('../assets/products/3.png'),
-    require('../assets/products/4.png'),
+    require('../assets/products/1.webp'),
+    require('../assets/products/2.webp'),
+    require('../assets/products/3.webp'),
+    require('../assets/products/4.webp'),
   ];
   export const imageset2 = [
-    require('../assets/products/5.png'),
-    require('../assets/products/6.png'),
-    require('../assets/products/7.png'),
-    require('../assets/products/8.png'),
+    require('../assets/products/5.webp'),
+    require('../assets/products/6.webp'),
+    require('../assets/products/7.webp'),
+    require('../assets/products/8.webp'),
   ];
   export const imageset3 = [
-    require('../assets/products/9.png'),
-    require('../assets/products/10.png'),
-    require('../assets/products/11.png'),
-    require('../assets/products/12.png'),
+    require('../assets/products/9.webp'),
+    require('../assets/products/10.webp'),
+    require('../assets/products/11.webp'),
+    require('../assets/products/12.webp'),
   ];
   export const imageset4 = [
-    require('../assets/products/13.png'),
-    require('../assets/products/14.png'),
-    require('../assets/products/15.png'),
-    require('../assets/products/16.png'),
+    require('../assets/products/13.webp'),
+    require('../assets/products/14.webp'),
+    require('../assets/products/15.webp'),
+    require('../assets/products/16.webp'),
   ];

@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   ScrollView,
   View,
+  StyleSheet,
+  Alert,
 } from 'react-native';
 import {scale} from 'react-native-size-matters';
 import ImageScroll from '../../components/OtpScreenAutoScrool';
@@ -28,7 +30,8 @@ import {phoneSchema} from '../../schema/zodSchema';
 import {SCREEN_NAME} from '../../constant/ScreenName';
 import {ApiConfig} from '../../config/ApiConfig';
 import axios from 'axios';
-import {saveToStorage} from '../../utils/MmkvStorageHelper';
+import { styles } from './styles';
+
 const AutoScrollExample = (props: any) => {
   const [selectedCountry, setSelectedCountry] = useState<ICountry | null>(null);
   const [loading, setLoading] = useState(false);
@@ -50,24 +53,18 @@ const AutoScrollExample = (props: any) => {
     try {
       const number = data.phone;
       const phone = `+91 ${number}`;
-      console.log('Sending OTP to:', phone);
       const response = await axios.post(ApiConfig.SEND_OTP, {phone});
       if (response?.status === 201) {
-        const otpCode = response?.data?.data?.otp?.code;
-        const PhoneNumber = response?.data?.data?.phone
-        const userId = response?.data?.data?._id;
-        console.log(userId,'userid')
+        const {otp, phone: PhoneNumber, _id: id} = response.data.data;
         props.navigation.navigate(SCREEN_NAME.OTP_VERIFY_SCREEN, {
-          otpCode:otpCode,
-          id:userId,
-          PhoneNumber:PhoneNumber
+          otpCode: otp?.code,
+          id,
+          PhoneNumber,
         });
       }
     } catch (error: any) {
-      console.error(
-        'Failed to send OTP:',
-        error.response?.data || error.message,
-      );
+      console.error('Failed to send OTP:', error.response?.data || error.message);
+      Alert.alert(error.response?.data?.message)
     } finally {
       setLoading(false);
     }
@@ -76,69 +73,36 @@ const AutoScrollExample = (props: any) => {
   const bottomColors = [...lightColors].reverse();
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: colors.white}}>
+    <SafeAreaView style={styles.safeArea}>
       <StatusBarComponent hidden={true} />
       <KeyboardAvoidingView
-        style={{flex: 1}}
+        style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={scale(30)}>
         <ScrollView
-          contentContainerStyle={{flexGrow: 1}}
+          contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled">
-          <ImageScroll
-            images={imageset1}
-            marginRight={scale(20)}
-            marginLeft={scale(20)}
-            marginTop={scale(40)}
-          />
-          <ImageScroll
-            images={imageset2}
-            marginRight={scale(20)}
-            marginLeft={scale(20)}
-            marginTop={scale(20)}
-            gap={scale(20)}
-          />
-          <ImageScroll
-            images={imageset3}
-            marginRight={scale(20)}
-            marginLeft={scale(20)}
-            marginTop={scale(20)}
-          />
-          <ImageScroll
-            images={imageset4}
-            marginRight={scale(20)}
-            marginLeft={scale(20)}
-            marginTop={scale(20)}
-            gap={scale(20)}
-          />
+          {[imageset1, imageset2, imageset3, imageset4].map((images, index) => (
+            <ImageScroll
+              key={index}
+              images={images}
+              marginLeft={scale(20)}
+              marginRight={scale(20)}
+              marginTop={index === 0 ? scale(40) : scale(20)}
+              gap={index % 2 !== 0 ? scale(20) : undefined}
+            />
+          ))}
 
-          <LinearGradient
-            colors={bottomColors}
-            style={{paddingTop: 10, width: '100%'}}
-          />
+          <LinearGradient colors={bottomColors} style={styles.linearGradient} />
 
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: colors.white,
-            }}>
-            <View>
-              <Image
-                source={IMG_PNG.LOGO_PNG}
-                style={{
-                  resizeMode: 'contain',
-                  height: scale(70),
-                  width: scale(70),
-                  borderRadius: scale(20),
-                }}
-              />
-            </View>
+          <View style={styles.centeredView}>
+            <Image source={IMG_PNG.LOGO_PNG} style={styles.logo} />
+
             <ResponsiveText
               title="India's last minute app"
               fontSize={30}
               fontWeight="bold"
-              fontStyle={{marginTop: scale(10)}}
+              fontStyle={styles.headingText}
               fontColor={colors.black}
             />
             <ResponsiveText
@@ -148,7 +112,6 @@ const AutoScrollExample = (props: any) => {
               fontColor={colors.bgBlack}
             />
 
-            {/* Phone Input with Controller */}
             <Controller
               name="phone"
               control={control}
@@ -158,32 +121,17 @@ const AutoScrollExample = (props: any) => {
                   value={value}
                   onChangePhoneNumber={phone => {
                     const cleaned = phone.trimStart().replace(/[^\d]/g, '');
-                    onChange(cleaned); // Send only clean digits to form state
+                    onChange(cleaned);
                   }}
                   selectedCountry={selectedCountry}
                   onChangeSelectedCountry={setSelectedCountry}
                   phoneInputStyles={{
-                    container: {
-                      width: '85%',
-                      marginTop: scale(18),
-                    },
-                    input: {
-                      color: colors.black,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flex: 1,
-                      fontSize: scale(12),
-                      right: scale(22),
-                    },
-                    flagContainer: {
-                      backgroundColor: colors.white,
-                    },
+                    container: styles.phoneInputContainer,
+                    input: styles.phoneInput,
+                    flagContainer: styles.flagContainer,
                   }}
                   modalStyles={{
-                    modal: {
-                      padding: scale(18),
-                      paddingHorizontal: scale(10),
-                    },
+                    modal: styles.modal,
                   }}
                 />
               )}
@@ -193,7 +141,7 @@ const AutoScrollExample = (props: any) => {
                 title={errors.phone.message}
                 fontColor={colors.red}
                 fontSize={10}
-                fontStyle={{marginLeft: 10}}
+                fontStyle={styles.errorText}
               />
             )}
 
@@ -201,14 +149,8 @@ const AutoScrollExample = (props: any) => {
               loading={loading}
               onPress={handleSubmit(onSubmit)}
               title="Continue"
-              buttonStyle={{
-                width: scale(300),
-                backgroundColor: colors.Olive_Green,
-                marginTop: scale(20),
-                paddingVertical: scale(14),
-                borderRadius: scale(14),
-              }}
-              titleStyle={{fontSize: scale(14), fontWeight: 'bold'}}
+              buttonStyle={styles.continueButton}
+              titleStyle={styles.buttonTitle}
             />
           </View>
         </ScrollView>
@@ -216,5 +158,6 @@ const AutoScrollExample = (props: any) => {
     </SafeAreaView>
   );
 };
+
 
 export default AutoScrollExample;
