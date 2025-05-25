@@ -1,5 +1,6 @@
 export const IMG_PNG ={
-LOGO_PNG:require('../assets/Images/logo.png')
+LOGO_PNG:require('../assets/Images/logo.png'),
+BG_PNG:require('../assets/Images/backgrond.png')
 }
 
 

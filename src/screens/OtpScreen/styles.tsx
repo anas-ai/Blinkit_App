@@ -1,6 +1,6 @@
 import { scale } from "react-native-size-matters";
 import { colors } from "../../styles/Colors";
-import { StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   safeArea: {
@@ -56,7 +56,6 @@ export const styles = StyleSheet.create({
     width: scale(300),
     backgroundColor: colors.Olive_Green,
     marginTop: scale(20),
-    paddingVertical: scale(14),
     borderRadius: scale(14),
   },
   buttonTitle: {

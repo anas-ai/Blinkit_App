@@ -6,7 +6,7 @@ import {SCREEN_NAME} from '../constant/ScreenName';
 import { LoginStack } from '../routes/Routes';
 
 const Stack = createNativeStackNavigator();
-const AppNavigatoin = () => {
+const LoginNavigator= () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={SCREEN_NAME.SPLASH_SCREEN}>
@@ -28,4 +28,4 @@ const AppNavigatoin = () => {
   );
 };
 
-export default AppNavigatoin;
+export default LoginNavigator;

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Alert, SafeAreaView, View, ActivityIndicator} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import axios from 'axios';
 import {OtpInput} from 'react-native-otp-entry';
@@ -12,11 +12,9 @@ import {ApiConfig} from '../../config/ApiConfig';
 import {SCREEN_NAME} from '../../constant/ScreenName';
 import {colors} from '../../styles/Colors';
 import {styles} from './style';
-import {
-  getStringFromStorage,
-  saveToStorage,
-} from '../../utils/MmkvStorageHelper';
+import {getStringFromStorage} from '../../utils/MmkvStorageHelper';
 import useAuth from '../../hooks/useAuth';
+import LoadingPage from '../../components/animationsLottie/LoadingPage';
 
 type RootStackParamList = {
   [SCREEN_NAME.HOME_SCREEN]: undefined;
@@ -39,17 +37,14 @@ interface OtpFormData {
   otp: string;
 }
 
-const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
-  navigation,
-  route,
-}) => {
+const OtpVerifyScreen = ({}) => {
+  const navigation = useNavigation();
+  const route = useRoute<OtpVerifyRouteProp>();
   const {PhoneNumber: userPhone, id: userID} = route.params;
-
   const [loading, setLoading] = useState(false);
   const [secondLeft, setSecondsLeft] = useState(30);
   const [canResend, setCanResend] = useState(false);
-
-  const {login} = useAuth()
+  const {login} = useAuth();
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -92,14 +87,12 @@ const OtpVerifyScreen: React.FC<OtpVerifyScreenProps> = ({
           otp: data.otp,
           user_id: userID,
         });
-        console.log(response.data, 'rjkdjkd');
+        // console.log(response.data, 'responseVerifyOtp');
         // if (response.status === 200) {
         //   navigation.navigate(SCREEN_NAME.HOME_SCREEN);
         // }
         const token = response.data?.accessToken;
-        login(token)
-        const getToken = getStringFromStorage('token');
-        console.log(getToken, 'getYkkk');
+        login(token);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           const message = error.response?.data?.message || 'An error occurred';

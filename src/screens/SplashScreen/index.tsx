@@ -1,9 +1,8 @@
 import React, {useEffect, useLayoutEffect} from 'react';
-import {View, StyleSheet, StatusBar} from 'react-native';
+import {View, StyleSheet, StatusBar, Platform} from 'react-native';
 import SplashScreenAnimation from '../../components/animationsLottie/SplashScreenAnimation';
 import {SCREEN_NAME} from '../../constant/ScreenName';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import StatusBarComponent from '../../components/StatusBarComponent/StatusBarComponent';
 
 type SplashScreenNavigationProp = NativeStackNavigationProp<
   any,
@@ -24,7 +23,9 @@ const SplashScreen = ({navigation}: SplashScreenProps) => {
 
   return (
     <View style={styles.container}>
-      <StatusBarComponent hidden={true}/>
+      {Platform.OS==='android' &&(
+        <StatusBar hidden={true}/>
+      )}
       <SplashScreenAnimation />
     </View>
   );

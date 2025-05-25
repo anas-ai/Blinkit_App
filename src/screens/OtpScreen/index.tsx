@@ -23,7 +23,6 @@ import {colors, lightColors} from '../../styles/Colors';
 import PhoneInput, {ICountry} from 'react-native-international-phone-number';
 import CustomButton from '../../components/ButtonComponent/ButtonCustom';
 import LinearGradient from 'react-native-linear-gradient';
-import StatusBarComponent from '../../components/StatusBarComponent/StatusBarComponent';
 import {useForm, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {phoneSchema} from '../../schema/zodSchema';
@@ -31,6 +30,7 @@ import {SCREEN_NAME} from '../../constant/ScreenName';
 import {ApiConfig} from '../../config/ApiConfig';
 import axios from 'axios';
 import { styles } from './styles';
+import StatusBarComponent from '../../components/StatusBarComponent/StatusBarComponet';
 
 const AutoScrollExample = (props: any) => {
   const [selectedCountry, setSelectedCountry] = useState<ICountry | null>(null);
@@ -74,14 +74,14 @@ const AutoScrollExample = (props: any) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBarComponent hidden={true} />
+      <StatusBarComponent hidden={false}  barStyle='dark-content' backgroundColor='transparent' />
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={scale(30)}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled">
+          keyboardShouldPersistTaps="always">
           {[imageset1, imageset2, imageset3, imageset4].map((images, index) => (
             <ImageScroll
               key={index}

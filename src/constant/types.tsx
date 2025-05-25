@@ -18,4 +18,11 @@ type CustomButtonProps ={
     loading?: boolean;
 }
 
-export type {ResponsiveTextTypes,CustomButtonProps}
+type RootStackParamList  ={
+    'splash-screen':undefined;
+    'otp-screen':undefined;
+    'otp-verify-screen': {PhoneNumber: string; id: string};
+    'home-screen': undefined;
+}
+
+export type {ResponsiveTextTypes,CustomButtonProps,RootStackParamList}

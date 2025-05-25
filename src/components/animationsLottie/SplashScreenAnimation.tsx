@@ -2,6 +2,7 @@ import React from 'react';
 import LottieView from 'lottie-react-native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constant/dimensions';
 import {StyleSheet} from 'react-native';
+import { styles } from '../../assets/animations/animationStyle';
 
 const SplashScreenAnimation = () => {
   return (
@@ -16,12 +17,4 @@ const SplashScreenAnimation = () => {
 
 export default SplashScreenAnimation;
 
-const styles = StyleSheet.create({
-  animationStyle: {
-    flex: 1,
-    height: SCREEN_HEIGHT,
-    width: SCREEN_WIDTH,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+

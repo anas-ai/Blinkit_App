@@ -1,13 +1,13 @@
-import {SafeAreaView, Text} from 'react-native';
 import React from 'react';
-import {globalStyles} from '../../styles/GlobalStyle';
+import {SafeAreaView, StatusBar, Platform} from 'react-native';
+import Home from './Home';
 
-const HomeScreen = () => {
+const HomeIndex = () => {
   return (
-    <SafeAreaView style={globalStyles.globalContainer}>
-      <Text>HomeScreen</Text>
+    <SafeAreaView>
+      <Home />
     </SafeAreaView>
   );
 };
 
-export default HomeScreen;
+export default HomeIndex;

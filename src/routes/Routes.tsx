@@ -1,7 +1,8 @@
 import {SCREEN_NAME} from '../constant/ScreenName';
-import HomeScreen from '../screens/HomeScreen';
+import HomeIndex from '../screens/HomeScreen';
 import OtpScreen from '../screens/OtpScreen';
 import OtpVerifyScreen from '../screens/OtpVerifyScreen';
+import ProfileIndex from '../screens/ProfileScreen';
 import SplashScreen from '../screens/SplashScreen';
 
 export const LoginStack = [
@@ -11,5 +12,6 @@ export const LoginStack = [
 ];
 
 export const AuthStack = [
-  {name: SCREEN_NAME.HOME_SCREEN, component: HomeScreen},
+  {name: SCREEN_NAME.HOME_SCREEN, component: HomeIndex},
+  {name: SCREEN_NAME.PROFILE_SCREEN, component: ProfileIndex},
 ];

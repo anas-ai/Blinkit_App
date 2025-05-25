@@ -9,3 +9,4 @@ export const ApiConfig = {
   SEND_OTP: `${BASE_URL}/users/send-otp`,
   OTP_VERIFY_OTP:`${BASE_URL}/users/verify-otp`
 };
+
