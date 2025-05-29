@@ -6,7 +6,7 @@ import {colors} from '../../styles/Colors';
 import VectorIcon from '../CustomIcons';
 import ResponsiveText from '../ResponsiveText';
 
-const HeaderComponent = ({
+const BackButtonHeader = ({
   navigation,
   title,
   IconName,
@@ -43,7 +43,7 @@ const HeaderComponent = ({
   );
 };
 
-export default HeaderComponent;
+export default BackButtonHeader;
 
 const style = StyleSheet.create({
   container: {

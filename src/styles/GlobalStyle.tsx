@@ -8,4 +8,5 @@ export const globalStyles = StyleSheet.create({
         paddingVertical:24,
         backgroundColor:colors.white,
     }
+    
 })

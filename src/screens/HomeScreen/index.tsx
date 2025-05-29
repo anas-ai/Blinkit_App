@@ -1,10 +1,11 @@
 import React from 'react';
 import {SafeAreaView, StatusBar, Platform} from 'react-native';
 import Home from './Home';
+import TabBarNavigator from '../../navigators/TabBarNavigator';
 
 const HomeIndex = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1}}>
       <Home />
     </SafeAreaView>
   );

@@ -1,31 +1,29 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  StatusBar,
-  Platform,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
-import React, {useState} from 'react';
-import ResponsiveText from '../../components/ResponsiveText';
-import {colors} from '../../styles/Colors';
-import WalletSvg from '../../assets/svg/walletSvg';
-import VectorIcon from '../../components/CustomIcons';
-import {scale} from 'react-native-size-matters';
-import {SCREEN_NAME} from '../../constant/ScreenName';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {IMG_PNG} from '../../constant/ImagesName';
-import {globalStyles} from '../../styles/GlobalStyle';
 import {Divider} from '@rneui/themed';
+import React, {useState} from 'react';
+import {
+  ImageBackground,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {scale} from 'react-native-size-matters';
+import VectorIcon from '../../components/CustomIcons';
+import ResponsiveText from '../../components/ResponsiveText';
+import {SCREEN_NAME} from '../../constant/ScreenName';
+import {colors} from '../../styles/Colors';
+import TabBarNavigator from '../../navigators/TabBarNavigator';
+import { removeFromStorage } from '../../utils/MmkvStorageHelper';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const [search, setSearch] = useState('');
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       {Platform.OS === 'android' && (
         <StatusBar
           translucent
@@ -36,7 +34,7 @@ const Home = () => {
 
       <ImageBackground
         resizeMode="cover"
-        style={[styles.imgeBackGrondContainer]}>
+        style={[styles.imgeBackGrondContainer, ]}>
         <View style={styles.HeaderContainer}>
           <TouchableOpacity activeOpacity={0.8}>
             <ResponsiveText
@@ -76,7 +74,9 @@ const Home = () => {
           </TouchableOpacity>
 
           <View style={styles.userWalletStyle}>
+            
             <VectorIcon
+            onPress={()=> removeFromStorage('token')}
               type="Ionicons"
               name="wallet"
               size={24}
@@ -88,7 +88,7 @@ const Home = () => {
               }}
             />
             <VectorIcon
-              onPress={() => navigation.navigate(SCREEN_NAME.PROFILE_SCREEN)}
+              onPress={() => navigation.navigate(SCREEN_NAME.PROFILE_SCREEN,{})}
               type="FontAwesome"
               name="user"
               size={24}
@@ -124,6 +124,8 @@ const Home = () => {
           </View>
         </View>
       </ImageBackground>
+
+      <TabBarNavigator />
     </View>
   );
 };

@@ -15,6 +15,7 @@ import {styles} from './style';
 import {getStringFromStorage} from '../../utils/MmkvStorageHelper';
 import useAuth from '../../hooks/useAuth';
 import LoadingPage from '../../components/animationsLottie/LoadingPage';
+import BackButtonHeader from '../../components/BackButtonCompoent/BackWithTitile';
 
 type RootStackParamList = {
   [SCREEN_NAME.HOME_SCREEN]: undefined;
@@ -38,7 +39,7 @@ interface OtpFormData {
 }
 
 const OtpVerifyScreen = ({}) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const route = useRoute<OtpVerifyRouteProp>();
   const {PhoneNumber: userPhone, id: userID} = route.params;
   const [loading, setLoading] = useState(false);
@@ -119,7 +120,7 @@ const OtpVerifyScreen = ({}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderComponent
+      <BackButtonHeader
         title="OTP Verification"
         IconName="arrow-back"
         IconType="Ionicons"

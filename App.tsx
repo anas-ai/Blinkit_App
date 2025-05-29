@@ -1,10 +1,10 @@
 import {View, Text, StatusBar, ActivityIndicator} from 'react-native';
 import React, {useLayoutEffect} from 'react';
 import useAuth from './src/hooks/useAuth';
-import AuthNavigator from './src/navigators/AuthNavigator';
 import LoadingPage from './src/components/animationsLottie/LoadingPage';
-import LoginNavigator from './src/navigators/LoginNavigator';
 import { colors } from './src/styles/Colors';
+import HomeNavigator from './src/navigators/HomeNavigator';
+import AuthNavigator from './src/navigators/AuthNavigator';
 
 const App = () => {
   const {userToken, loading} = useAuth();
@@ -17,7 +17,7 @@ const App = () => {
     );
   }
 
-  return userToken ? <AuthNavigator /> : <LoginNavigator />;
+  return userToken ? <HomeNavigator /> : <AuthNavigator />;
 };
 
 export default App;

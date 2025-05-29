@@ -29,8 +29,9 @@ import {phoneSchema} from '../../schema/zodSchema';
 import {SCREEN_NAME} from '../../constant/ScreenName';
 import {ApiConfig} from '../../config/ApiConfig';
 import axios from 'axios';
-import { styles } from './styles';
+import {styles} from './styles';
 import StatusBarComponent from '../../components/StatusBarComponent/StatusBarComponet';
+import { saveToStorage } from '../../utils/MmkvStorageHelper';
 
 const AutoScrollExample = (props: any) => {
   const [selectedCountry, setSelectedCountry] = useState<ICountry | null>(null);
@@ -56,6 +57,7 @@ const AutoScrollExample = (props: any) => {
       const response = await axios.post(ApiConfig.SEND_OTP, {phone});
       if (response?.status === 201) {
         const {otp, phone: PhoneNumber, _id: id} = response.data.data;
+         saveToStorage('phone',PhoneNumber)
         props.navigation.navigate(SCREEN_NAME.OTP_VERIFY_SCREEN, {
           otpCode: otp?.code,
           id,
@@ -63,8 +65,11 @@ const AutoScrollExample = (props: any) => {
         });
       }
     } catch (error: any) {
-      console.error('Failed to send OTP:', error.response?.data || error.message);
-      Alert.alert(error.response?.data?.message)
+      console.error(
+        'Failed to send OTP:',
+        error.response?.data || error.message,
+      );
+      Alert.alert(error.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -74,7 +79,10 @@ const AutoScrollExample = (props: any) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBarComponent hidden={false}  barStyle='dark-content' backgroundColor='transparent' />
+      <StatusBarComponent
+        barStyle="dark-content"
+        backgroundColor="transparent"
+      />
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -158,6 +166,5 @@ const AutoScrollExample = (props: any) => {
     </SafeAreaView>
   );
 };
-
 
 export default AutoScrollExample;

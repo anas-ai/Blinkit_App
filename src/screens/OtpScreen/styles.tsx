@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
+    paddingTop:Platform.OS==='android'? StatusBar.currentHeight ?? 10:0
   },
   scrollContent: {
     flexGrow: 1,

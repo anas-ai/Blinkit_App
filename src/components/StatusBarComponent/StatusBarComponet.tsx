@@ -1,31 +1,28 @@
-import React, { useLayoutEffect } from 'react';
-import { StatusBar, StatusBarStyle } from 'react-native';
 
-interface Props {
-  hidden?: boolean;
+
+import {View, Text, StatusBar, StatusBarStyle, Platform} from 'react-native';
+import React from 'react';
+
+interface StatusBarComponentProps {
   backgroundColor?: string;
-  barStyle?: StatusBarStyle; // 'default' | 'light-content' | 'dark-content'
+  barStyle?: StatusBarStyle;
   translucent?: boolean;
 }
 
-const StatusBarComponent: React.FC<Props> = ({
-  hidden = false,
+const StatusBarComponet: React.FC<StatusBarComponentProps> = ({
   backgroundColor = 'transparent',
-  barStyle = 'default',
-  translucent = false,
+  barStyle = 'light-content',
+  translucent = true,
 }) => {
-  useLayoutEffect(() => {
-    StatusBar.setHidden(hidden);
-    StatusBar.setBarStyle(barStyle);
-    StatusBar.setBackgroundColor(backgroundColor, true);
-    StatusBar.setTranslucent(translucent);
+  if (Platform.OS !== 'android') return null;
 
-    return () => {
-      StatusBar.setHidden(false); // reset to visible when unmounts
-    };
-  }, [hidden, backgroundColor, barStyle, translucent]);
-
-  return null;
+  return (
+    <StatusBar
+      backgroundColor={backgroundColor}
+      barStyle={barStyle}
+      translucent={translucent}
+    />
+  );
 };
 
-export default StatusBarComponent;
+export default StatusBarComponet;
