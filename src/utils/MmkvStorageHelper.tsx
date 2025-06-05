@@ -9,19 +9,14 @@ export const saveToStorage = (
   storage.set(Key, value);
 };
 
-// Get a string value
-
 export const getStringFromStorage = (Key: string): string | undefined => {
   return storage.getString(Key);
 };
-
-// Get a number value
 
 export const getNumberFromStorage = (key: string): number | undefined => {
   return storage.getNumber(key);
 };
 
-// Get a boolen value
 export const getBoolenFromStorage = (key: string): boolean | undefined => {
   return storage.getBoolean(key);
 };
@@ -34,7 +29,6 @@ export const clearStorage = () => {
   storage.clearAll();
 };
 
-// Save an object
 export const saveObjectToStorage = (key: string, obj: object) => {
   storage.set(key, JSON.stringify(obj));
 };

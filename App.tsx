@@ -8,6 +8,7 @@ import AuthNavigator from './src/navigators/AuthNavigator';
 
 const App = () => {
   const {userToken, loading} = useAuth();
+  
 
   if (loading) {
     return (

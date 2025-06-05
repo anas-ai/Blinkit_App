@@ -5,7 +5,7 @@ type ResponsiveTextTypes = {
     fontColor?:string;
     fontWeight?:TextStyle['fontWeight'];
     fontSize?:number;
-    fontStyle?:ViewStyle
+    fontStyle?:TextStyle
 }
 
 type CustomButtonProps ={

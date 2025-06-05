@@ -8,7 +8,7 @@ export const colors = {
     black: '#000000',
     greyColor: '#212121',
     darkGray: '#A6A6A6',
-    lightGray: '#F6F8FA',
+    lightGray: '#F2F3F8',
     transparent: '#ffffff00',
     placeHolder: '#111',
     borderGrey: '#434343',
@@ -23,7 +23,7 @@ export const colors = {
     bgPink1: '#FFFAE8',
     bgBlack: 'rgba(0, 0, 0, 0.75)',
     bgBlack1: '#2A2A2B',
-    gray: '#9D9D9D',
+    Darkgray: '#9D9D9D',
     lightpurple: '#c5cbd6',
     logoTxtColor:'#9237E3',
     bgGray:'#C4C4C4',
@@ -33,7 +33,7 @@ export const colors = {
     jobcategoriColor2:'#37B7AF',
     jobcategoriColor3:'#CB37E3',
     textSecondary:'#787878',
-    graytextColor:'#484848',
+    graytextColor:'#5B6274',
     TextBOxBG_Color:'#EAEAEA',
     logoutbg_color:'#DA8585',
     IconInActive_color:'#B0ACB3',
@@ -44,7 +44,9 @@ export const colors = {
     Neon_Pink:'#FF00FF',
     light_green:'#00B932',
     Button_gray:'#EEEEEE',
-    Olive_Green:'#318516'
+    Olive_Green:'#318516',
+    Gray_BG:'rgba(255,255,255,0.7)',
+
   };
   
 
