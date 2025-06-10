@@ -4,40 +4,46 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {colors} from '../styles/Colors';
 import VectorIcon from '../components/CustomIcons';
 import ResponsiveText from '../components/ResponsiveText';
-
-const TabOne = () => (
-  <View style={styles.center}>
-    <Text>Tab One Content</Text>
-  </View>
-);
-
-const TabTwo = () => (
-  <ScrollView contentContainerStyle={styles.center}>
-    <View>
-      <Text>Tab Two Content</Text>
-    </View>
-  </ScrollView>
-);
+import {useThemeStore} from '../store/themeStore';
 
 const data = [{key: 'tabOne'}, {key: 'tabTwo'}];
 
-const CombinedTabsFlatList = () => {
-  const renderItem = ({item}: {item: {key: string}}) => {
-    if (item.key === 'tabOne') return <TabOne />;
-    if (item.key === 'tabTwo') return <TabTwo />;
-    return null;
-  };
-  return (
-    <FlatList
-      data={data}
-      renderItem={renderItem}
-      keyExtractor={item => item.key}
-    />
-  );
-};
-
 const Tab = createMaterialTopTabNavigator();
 const TabBarNavigator = () => {
+  const {resolvedTheme} = useThemeStore();
+  const isDarkMode = resolvedTheme === 'dark';
+
+  const CombinedTabsFlatList = () => {
+    const renderItem = ({item}: {item: {key: string}}) => {
+      if (item.key === 'tabOne') return <TabOne />;
+      if (item.key === 'tabTwo') return <TabTwo />;
+      return null;
+    };
+    return (
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.key}
+      />
+    );
+  };
+
+  const TabOne = () => (
+    <View style={styles.center}>
+      <Text style={{color: isDarkMode ? colors.white : colors.bgBlack}}>
+        Tab One Content
+      </Text>
+    </View>
+  );
+
+  const TabTwo = () => (
+    <ScrollView contentContainerStyle={styles.center}>
+      <View>
+        <Text style={{}}>Tab Two Content</Text>
+      </View>
+    </ScrollView>
+  );
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -46,7 +52,7 @@ const TabBarNavigator = () => {
           let label = '';
 
           if (route.name === 'TabOne') {
-            iconName = focused ? 'home' : 'home-outline';
+            iconName = focused ? 'home' : 'home';
             label = 'All';
           } else if (route.name === 'TabTwo') {
             iconName = focused ? 'user' : 'user-o';
@@ -64,8 +70,12 @@ const TabBarNavigator = () => {
             </View>
           );
         },
-        tabBarIndicatorStyle: {backgroundColor: colors.black},
-        tabBarStyle: {backgroundColor: colors.Olive_Green},
+        tabBarIndicatorStyle: {
+          backgroundColor: isDarkMode ? colors.white : colors.black,
+        },
+        tabBarStyle: {
+          backgroundColor: isDarkMode ? colors.bgBlack : colors.Olive_Green,
+        },
       })}>
       <Tab.Screen name="TabOne" component={TabOne} />
       <Tab.Screen name="TabTwo" component={TabTwo} />

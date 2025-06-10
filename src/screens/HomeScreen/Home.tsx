@@ -16,11 +16,15 @@ import ResponsiveText from '../../components/ResponsiveText';
 import {SCREEN_NAME} from '../../constant/ScreenName';
 import {colors} from '../../styles/Colors';
 import TabBarNavigator from '../../navigators/TabBarNavigator';
-import { removeFromStorage } from '../../utils/MmkvStorageHelper';
+import {removeFromStorage} from '../../utils/MmkvStorageHelper';
+import {useThemeStore} from '../../store/themeStore';
+import {Switch} from '@rneui/base';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const [search, setSearch] = useState('');
+  const {resolvedTheme} = useThemeStore();
+  const isDarkMode = resolvedTheme === 'dark';
 
   return (
     <View style={{flex: 1}}>
@@ -28,13 +32,16 @@ const Home = () => {
         <StatusBar
           translucent
           backgroundColor="transparent"
-          barStyle="light-content"
+          barStyle={isDarkMode ? 'light-content' : 'light-content'}
         />
       )}
 
       <ImageBackground
         resizeMode="cover"
-        style={[styles.imgeBackGrondContainer, ]}>
+        style={[
+          styles.imgeBackGrondContainer,
+          {backgroundColor: isDarkMode ? colors.black : colors.Olive_Green},
+        ]}>
         <View style={styles.HeaderContainer}>
           <TouchableOpacity activeOpacity={0.8}>
             <ResponsiveText
@@ -50,6 +57,9 @@ const Home = () => {
               fontWeight="bold"
               fontSize={30}
             />
+
+           
+
             <View style={styles.addressStyle}>
               <ResponsiveText
                 title="Home"
@@ -70,13 +80,14 @@ const Home = () => {
                 size={14}
                 color={colors.white}
               />
+              
             </View>
+
+            
           </TouchableOpacity>
 
           <View style={styles.userWalletStyle}>
-            
             <VectorIcon
-            onPress={()=> removeFromStorage('token')}
               type="Ionicons"
               name="wallet"
               size={24}
@@ -88,7 +99,9 @@ const Home = () => {
               }}
             />
             <VectorIcon
-              onPress={() => navigation.navigate(SCREEN_NAME.PROFILE_SCREEN,{})}
+              onPress={() =>
+                navigation.navigate(SCREEN_NAME.PROFILE_SCREEN, {})
+              }
               type="FontAwesome"
               name="user"
               size={24}

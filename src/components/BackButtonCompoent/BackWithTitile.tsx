@@ -5,6 +5,7 @@ import IconBars from 'react-native-vector-icons/FontAwesome5';
 import {colors} from '../../styles/Colors';
 import VectorIcon from '../CustomIcons';
 import ResponsiveText from '../ResponsiveText';
+import {useThemeStore} from '../../store/themeStore';
 
 const BackButtonHeader = ({
   navigation,
@@ -13,6 +14,9 @@ const BackButtonHeader = ({
   IconSize,
   IconType,
 }: any) => {
+  const {resolvedTheme} = useThemeStore();
+  const isDarkMode = resolvedTheme === 'dark';
+
   const handleNavigatoin = () => {
     if (IconName === 'arrow-back') {
       navigation.goBack();
@@ -22,22 +26,34 @@ const BackButtonHeader = ({
     }
   };
   return (
-    <View style={style.container}>
-      <View style={style.contentStyle}>
-        <VectorIcon
-          type={IconType}
-          name={IconName}
-          size={IconSize}
-          color={colors.bgBlack}
-          onPress={handleNavigatoin}
-        />
+    <View
+      style={[
+        style.container,
+        {backgroundColor: isDarkMode ? colors.black : colors.white},
+      ]}>
+      <View style={{}}>
+        <View style={style.contentStyle}>
+          <VectorIcon
+            type={IconType}
+            name={IconName}
+            size={IconSize}
+            color={isDarkMode ? colors.white : colors.bgBlack}
+            onPress={handleNavigatoin}
+          />
 
-        <ResponsiveText
-          title={title}
-          fontSize={moderateScale(16)}
-          fontColor={colors.bgBlack}
-          fontWeight="500"
+          <ResponsiveText
+            title={title}
+            fontSize={moderateScale(16)}
+            fontColor={isDarkMode ? colors.white : colors.black}
+            fontWeight="500"
+          />
+        <VectorIcon
+        
+          type="Entypo"
+          name={isDarkMode ? 'light-down' : 'light-up'}
+          color={isDarkMode ? colors.white : colors.black}
         />
+        </View>
       </View>
     </View>
   );
@@ -60,5 +76,6 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: scale(10),
+    justifyContent:'space-around'
   },
 });

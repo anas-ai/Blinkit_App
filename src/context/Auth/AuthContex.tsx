@@ -1,10 +1,11 @@
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
-import {getStringFromStorage, saveToStorage} from '../../utils/MmkvStorageHelper';
+import {getStringFromStorage, removeFromStorage, saveToStorage} from '../../utils/MmkvStorageHelper';
 
 type AuthContextype = {
   userToken: string | null;
   loading: boolean;
   login: (token: string) => Promise<void>;
+  logout:()=>Promise<void>
 };
 
 export const AuthContext = createContext<AuthContextype | undefined>(undefined);
@@ -26,6 +27,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     setLoading(false);
   };
 
+  const logout = async() =>{
+    setLoading(true);
+    try {
+      removeFromStorage('token');
+      setUserToken(null)
+    } catch (error) {
+      console.error('Error removeing token',error)
+    }
+    setLoading(false)
+  }
+
   const checkLoginState = async () => {
     setLoading(true);
     try {
@@ -37,12 +49,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     setLoading(false);
   };
 
+
+
+
   useEffect(() => {
     checkLoginState();
   }, []);
 
   return (
-    <AuthContext.Provider value={{login, userToken, loading}}>
+    <AuthContext.Provider value={{login,logout, userToken, loading}}>
       {children}
     </AuthContext.Provider>
   );
