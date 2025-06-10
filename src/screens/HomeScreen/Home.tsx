@@ -1,6 +1,6 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {Divider} from '@rneui/themed';
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react'; // Add useCallback
 import {
   ImageBackground,
   Platform,
@@ -18,9 +18,24 @@ import {colors} from '../../styles/Colors';
 import TabBarNavigator from '../../navigators/TabBarNavigator';
 import { removeFromStorage } from '../../utils/MmkvStorageHelper';
 
-const Home = () => {
+// type definition for the comp
+type HomeScreenNavigationProp = NavigationProp<any>; //  type for navigation stack
+
+interface HomeScreenProps {
+  navigation: HomeScreenNavigationProp;
+}
+
+const Home: React.FC<HomeScreenProps> = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const [search, setSearch] = useState('');
+
+  const handleWalletPress = useCallback(() => {
+    removeFromStorage('token');
+  }, []);
+
+  const handleProfilePress = useCallback(() => {
+    navigation.navigate(SCREEN_NAME.PROFILE_SCREEN, {});
+  }, [navigation]);
 
   return (
     <View style={{flex: 1}}>
@@ -33,8 +48,9 @@ const Home = () => {
       )}
 
       <ImageBackground
+        source={require('../../assets/Images/backgrond.png')} 
         resizeMode="cover"
-        style={[styles.imgeBackGrondContainer, ]}>
+        style={[styles.imgeBackGrondContainer]}>
         <View style={styles.HeaderContainer}>
           <TouchableOpacity activeOpacity={0.8}>
             <ResponsiveText
@@ -88,7 +104,7 @@ const Home = () => {
               }}
             />
             <VectorIcon
-              onPress={() => navigation.navigate(SCREEN_NAME.PROFILE_SCREEN,{})}
+              onPress={handleProfilePress} // Using callback
               type="FontAwesome"
               name="user"
               size={24}
@@ -105,21 +121,35 @@ const Home = () => {
         </View>
 
         <View style={styles.searchContainer}>
-          <View style={styles.searchItemContaienr}>
+          <View style={styles.searchItemContainer}> 
             <TouchableOpacity activeOpacity={0.8}>
-              <VectorIcon type="Ionicons" name="search" />
+              <VectorIcon 
+                type="Ionicons" 
+                name="search"
+                size={24}
+                color={colors.bgBlack} 
+              />
             </TouchableOpacity>
             <TextInput
+              value={search}
+              onChangeText={setSearch}
               placeholder="search here..."
               placeholderTextColor={colors.bgBlack}
               style={styles.searchInputStyle}
+              accessibilityLabel="Search input field"
+              accessibilityHint="Enter text to search for items"
             />
             <Divider
               orientation="vertical"
               style={{borderColor: colors.black, marginRight: 10}}
             />
             <TouchableOpacity activeOpacity={0.6}>
-              <VectorIcon type="MaterialIcons" name="keyboard-voice" />
+              <VectorIcon 
+                type="MaterialIcons" 
+                name="keyboard-voice"
+                size={24}
+                color={colors.bgBlack}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -133,12 +163,14 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
-  imgeBackGrondContainer: {
+  imgeBackGrondContainer: { 
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight ?? 24 : 0,
     overflow: 'hidden',
     paddingHorizontal: scale(14),
     paddingVertical: scale(20),
     backgroundColor: colors.Olive_Green,
+    width: '100%', // Add this to ensure proper width
+    height: 'auto', // Add this for proper height handling
   },
   HeaderContainer: {
     flexDirection: 'row',
@@ -155,7 +187,10 @@ const styles = StyleSheet.create({
     gap: scale(5),
   },
   searchContainer: {marginTop: scale(18)},
-  searchItemContaienr: {
+  container: {
+    flex: 1
+  },
+  searchItemContainer: {
     backgroundColor: colors.white,
     borderRadius: scale(10),
     flexDirection: 'row',
@@ -163,6 +198,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: scale(10),
     paddingVertical: scale(8),
+  },
+  iconBackground: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: scale(8),
+    borderRadius: scale(50),
+    width: 40,
+    textAlign: 'center',
   },
   searchInputStyle: {
     flex: 1,

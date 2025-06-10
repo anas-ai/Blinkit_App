@@ -5,6 +5,7 @@ import LoadingPage from './src/components/animationsLottie/LoadingPage';
 import { colors } from './src/styles/Colors';
 import HomeNavigator from './src/navigators/HomeNavigator';
 import AuthNavigator from './src/navigators/AuthNavigator';
+import { NavigationContainer } from '@react-navigation/native';
 
 const App = () => {
   const {userToken, loading} = useAuth();
@@ -17,7 +18,11 @@ const App = () => {
     );
   }
 
-  return userToken ? <HomeNavigator /> : <AuthNavigator />;
+  return (
+    <NavigationContainer>
+      {userToken ? <HomeNavigator /> : <AuthNavigator />}
+    </NavigationContainer>
+  );
 };
 
 export default App;
