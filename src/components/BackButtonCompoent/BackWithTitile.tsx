@@ -13,8 +13,10 @@ const BackButtonHeader = ({
   IconName,
   IconSize,
   IconType,
+  themeIcon,
+  ThemeColor
 }: any) => {
-  const {resolvedTheme} = useThemeStore();
+  const {resolvedTheme, setMode} = useThemeStore();
   const isDarkMode = resolvedTheme === 'dark';
 
   const handleNavigatoin = () => {
@@ -25,14 +27,18 @@ const BackButtonHeader = ({
       navigation.goBack();
     }
   };
+
+  const toggleMode = () => {
+    setMode(isDarkMode ? 'light' : 'dark');
+  };
   return (
     <View
       style={[
         style.container,
         {backgroundColor: isDarkMode ? colors.black : colors.white},
       ]}>
-      <View style={{}}>
-        <View style={style.contentStyle}>
+      <View style={style.contentStyle}>
+        <View style={style.headerContentContaienr}>
           <VectorIcon
             type={IconType}
             name={IconName}
@@ -47,17 +53,19 @@ const BackButtonHeader = ({
             fontColor={isDarkMode ? colors.white : colors.black}
             fontWeight="500"
           />
-        <VectorIcon
-        
-          type="Entypo"
-          name={isDarkMode ? 'light-down' : 'light-up'}
-          color={isDarkMode ? colors.white : colors.black}
-        />
         </View>
+        <VectorIcon
+          onPress={toggleMode}
+          type="Entypo"
+          name={themeIcon}
+          color={ThemeColor}
+          size={30}
+        />
       </View>
     </View>
   );
 };
+
 
 export default BackButtonHeader;
 
@@ -69,13 +77,18 @@ const style = StyleSheet.create({
     elevation: scale(14),
     paddingBottom: scale(16),
   },
+  headerContentContaienr: {
+    flexDirection: 'row',
+    gap: scale(10),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   contentStyle: {
     flex: 1,
     paddingHorizontal: scale(16),
     marginTop: scale(60),
     flexDirection: 'row',
     alignItems: 'center',
-    gap: scale(10),
-    justifyContent:'space-around'
+    justifyContent: 'space-between',
   },
 });

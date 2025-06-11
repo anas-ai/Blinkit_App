@@ -155,12 +155,12 @@ const YourAccount = () => {
           </TouchableOpacity>
         </View>
 
-        <Switch
+        {/* <Switch
           value={isDarkMode}
           onValueChange={value => setMode(value ? 'dark' : 'light')}
           trackColor={{false: '#767577', true: '#81b0ff'}}
           thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
-        />
+        /> */}
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>

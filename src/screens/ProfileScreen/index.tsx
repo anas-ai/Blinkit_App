@@ -5,6 +5,7 @@ import BackButtonHeader from '../../components/BackButtonCompoent/BackWithTitile
 import StatusBarComponet from '../../components/StatusBarComponent/StatusBarComponet';
 import YourAccount from './yourAccount';
 import { useThemeStore } from '../../store/themeStore';
+import { colors } from '../../styles/Colors';
 
 type navigationProps = {
   navigation: NavigationProp<any>;
@@ -24,6 +25,8 @@ const ProfileIndex = ({navigation}: navigationProps) => {
         IconName="arrow-back"
         IconType="Ionicons"
         navigation={navigation}
+        themeIcon={isDarkMode ? 'moon' : 'light-up'}
+        ThemeColor={isDarkMode ? colors.white : colors.black}
         
       />
       <YourAccount />
