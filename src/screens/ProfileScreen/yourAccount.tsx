@@ -256,7 +256,7 @@ const YourAccount = () => {
               <ResponsiveText
                 title={item.title}
                 fontSize={16}
-                fontColor={isDarkMode ? colors.white : colors.bgBlack1}
+                fontColor={isDarkMode ? colors.white : colors.black}
                 fontWeight="500"
                 fontStyle={styles.textStyle}
               />
@@ -300,7 +300,7 @@ const YourAccount = () => {
               </View>
               <ResponsiveText
                 title={item.title}
-                fontColor={isDarkMode?colors.white:colors.white}
+                fontColor={isDarkMode?colors.white:colors.black}
                 fontWeight="400"
                 fontStyle={styles.textStyle}
               />

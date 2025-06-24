@@ -1,6 +1,6 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {Divider} from '@rneui/themed';
-import React, {useState} from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { Divider } from '@rneui/themed';
+import React, { useState } from 'react';
 import {
   ImageBackground,
   Platform,
@@ -10,19 +10,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {scale} from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import VectorIcon from '../../components/CustomIcons';
 import ResponsiveText from '../../components/ResponsiveText';
-import {SCREEN_NAME} from '../../constant/ScreenName';
-import {colors} from '../../styles/Colors';
+import { SCREEN_NAME } from '../../constant/ScreenName';
 import TabBarNavigator from '../../navigators/TabBarNavigator';
-import {removeFromStorage} from '../../utils/MmkvStorageHelper';
-import {useThemeStore} from '../../store/themeStore';
-import {Switch} from '@rneui/base';
+import { useThemeStore } from '../../store/themeStore';
+import { colors } from '../../styles/Colors';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<any>>();
-  const [search, setSearch] = useState('');
   const {resolvedTheme} = useThemeStore();
   const isDarkMode = resolvedTheme === 'dark';
 
@@ -58,8 +55,6 @@ const Home = () => {
               fontSize={30}
             />
 
-           
-
             <View style={styles.addressStyle}>
               <ResponsiveText
                 title="Home"
@@ -80,10 +75,7 @@ const Home = () => {
                 size={14}
                 color={colors.white}
               />
-              
             </View>
-
-            
           </TouchableOpacity>
 
           <View style={styles.userWalletStyle}>
@@ -147,15 +139,17 @@ export default Home;
 
 const styles = StyleSheet.create({
   imgeBackGrondContainer: {
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight ?? 24 : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight ?? 30 : 0,
     overflow: 'hidden',
     paddingHorizontal: scale(14),
     paddingVertical: scale(20),
     backgroundColor: colors.Olive_Green,
+
   },
   HeaderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingTop: scale(10),
   },
   userWalletStyle: {
     flexDirection: 'row',
